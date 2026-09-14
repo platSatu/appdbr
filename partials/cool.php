@@ -179,10 +179,25 @@
         }
 
         /* ==== Daftar COOL - Marquee ====
-           container-type:inline-size supaya ukuran kartu (cqw) mengikuti
-           lebar KOLOM KONTEN INI (bukan lebar layar penuh/vw) -- jadi tetap
-           pas & tidak meluber keluar kotak kuning, baik di layar lebar
-           (landscape) maupun sempit (portrait, sesuai kebutuhan signage). */
+           FIX (14 September 2026) -- SEBELUMNYA pakai container-type:inline-size
+           + satuan cqw supaya ukuran kartu ikut lebar kolom konten (bukan
+           lebar layar penuh/vw). Container Queries (cqw) itu fitur CSS yang
+           relatif baru (baru didukung browser modern, Chrome 105+/2022 ke
+           atas) -- browser bawaan (WebView) di layar signage ternyata JAUH
+           lebih lama dan TIDAK mengenali cqw, jadi seluruh clamp() yang
+           memakainya jadi tidak valid & diabaikan browser, ukurannya balik
+           ke default yang jauh lebih besar ("berantakan, besar-besar
+           semua") -- persis laporan user, padahal di HP (browser modern)
+           terlihat normal. Semua menu LAIN aman karena semuanya dari awal
+           cuma pakai vw/vh biasa (satuan lama, didukung semua browser
+           termasuk yang tua di signage).
+
+           Diganti balik ke vw biasa (dihitung ulang proporsinya dari lebar
+           kolom konten ".content-section" yang 70% lebar layar di
+           dashboard.php, supaya ukuran visualnya tetap sama persis seperti
+           sebelumnya) -- konsisten dengan pendekatan menu lain yang sudah
+           terbukti jalan normal di signage tersebut, portrait maupun
+           landscape. */
         .cool-directory-section {
             flex: 1;
             min-height: 0;
@@ -191,11 +206,10 @@
             margin-top: 2.6vh;
             padding-top: 1.6vh;
             border-top: 2px dashed rgba(0, 0, 0, 0.15);
-            container-type: inline-size;
         }
 
         .cool-directory-heading {
-            font-size: clamp(13px, 4.2cqw, 22px);
+            font-size: clamp(13px, 2.9vw, 22px);
             font-weight: 800;
             color: #000000;
             margin-bottom: 1vh;
@@ -216,7 +230,7 @@
         .cool-marquee-track {
             display: flex;
             align-items: stretch;
-            gap: 3cqw;
+            gap: 2.1vw;
             height: 100%;
             width: max-content;
             animation-name: coolMarqueeScroll;
@@ -232,7 +246,7 @@
         .cool-card {
             position: relative;
             flex: 0 0 auto;
-            width: clamp(148px, 34cqw, 240px);
+            width: clamp(148px, 23vw, 240px);
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -249,7 +263,7 @@
             z-index: 2;
             background: rgba(0, 0, 0, 0.65);
             color: #ffffff;
-            font-size: clamp(9px, 3cqw, 12px);
+            font-size: clamp(9px, 2vw, 12px);
             font-weight: 700;
             padding: 3px 8px;
             border-radius: 10px;
@@ -299,7 +313,7 @@
 
         .cool-card-photo-placeholder span {
             color: #f7e784;
-            font-size: clamp(16px, 6cqw, 26px);
+            font-size: clamp(16px, 4vw, 26px);
             font-weight: 800;
         }
 
@@ -309,34 +323,34 @@
         }
 
         .cool-card-name {
-            font-size: clamp(13px, 5cqw, 19px);
+            font-size: clamp(13px, 3.4vw, 19px);
             font-weight: 800;
             color: #000000;
             line-height: 1.25;
         }
 
         .cool-card-location {
-            font-size: clamp(10.5px, 3.6cqw, 14px);
+            font-size: clamp(10.5px, 2.45vw, 14px);
             color: #3d3d3d;
             margin-bottom: 4px;
         }
 
         .cool-card-role {
-            font-size: clamp(9.5px, 3.2cqw, 12.5px);
+            font-size: clamp(9.5px, 2.2vw, 12.5px);
             font-style: italic;
             color: #6a5a1f;
             margin-top: 3px;
         }
 
         .cool-card-gembala {
-            font-size: clamp(11.5px, 4.1cqw, 16px);
+            font-size: clamp(11.5px, 2.8vw, 16px);
             font-weight: 700;
             color: #000000;
             margin-bottom: 4px;
         }
 
         .cool-card-meta {
-            font-size: clamp(10px, 3.4cqw, 13.5px);
+            font-size: clamp(10px, 2.3vw, 13.5px);
             color: #2b2b2b;
             display: flex;
             align-items: center;
@@ -371,8 +385,9 @@
         }
 
         /* Responsive -- teks judul & deskripsi tetap ikut lebar layar (vw),
-           kartu COOL sudah otomatis menyesuaikan sendiri lewat cqw di atas
-           jadi tidak perlu override lagi di sini. */
+           kartu COOL sudah otomatis menyesuaikan sendiri lewat vw di atas
+           (lihat FIX 14 September 2026 di .cool-directory-section) jadi
+           tidak perlu override lagi di sini. */
         @media (max-width: 768px) {
             .title-main { font-size: 5vw; }
             .title-sub { font-size: 3vw; }
