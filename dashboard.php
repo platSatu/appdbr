@@ -131,6 +131,26 @@
             justify-content: center;
         }
 
+        /* FIX (14 September 2026) -- .tab-content SEBELUMNYA tidak punya lebar
+           tegas (cuma mengandalkan default flex-item sizing), jadi kalau ADA
+           konten di dalam salah satu tab yang lebarnya menyesuaikan isi
+           (mis. .cool-marquee-track di cool.php yang sengaja width:max-content
+           supaya animasi marquee-nya jalan mulus), seluruh .tab-content ikut
+           melebar mengikuti lebar konten itu (terukur sampai ~11.854px di HP
+           lebar 375px!) alih-alih tetap di lebar kolom 70% yang seharusnya.
+           Bug ini sebenarnya sudah ada dari awal, cuma baru ketahuan sekarang
+           karena cuma tab COOL yang punya elemen lebar-mengikuti-isi seperti
+           itu -- menu lain aman karena semua elemennya lebar biasa (vw/%).
+           Kasih width:100% + min-width:0 supaya .tab-content dipaksa
+           mengikuti lebar kolom .content-section, TIDAK PEDULI seberapa
+           lebar konten di dalamnya (overflow-nya biar ditangani sendiri2
+           lewat overflow-x:hidden di elemen yang butuh, seperti
+           .cool-marquee). */
+        .tab-content {
+            width: 100%;
+            min-width: 0;
+        }
+
         .tab-pane {
             width: 100%;
         }
